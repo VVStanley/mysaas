@@ -1,0 +1,22 @@
+
+# Собрать и запустить проект
+up:
+	docker-compose up --build
+
+# Только собрать образы
+build:
+	docker-compose build
+
+# Остановить контейнеры
+down:
+	docker-compose down
+
+down-v:
+	docker-compose down -v
+
+# Посмотреть логи
+logs:
+	docker-compose logs -f
+
+# Перезапустить проект
+restart: down up

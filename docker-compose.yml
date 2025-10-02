@@ -1,0 +1,42 @@
+version: "3.9"
+services:
+  django:
+    build: .
+    container_name: django_saas
+    command: poetry run python saas/manage.py runserver 0.0.0.0:8000
+    ports:
+      - "8088:8000"
+    env_file: .env
+    environment:
+      - PYTHONPATH=/app
+    volumes:
+      - ./saas:/app/saas
+    depends_on:
+      - postgres
+
+  bot:
+    build: .
+    container_name: bot_saas
+    command: poetry run python -m bot.main
+    env_file: .env
+    volumes:
+      - ./bot:/app/bot
+    depends_on:
+      - django
+      - postgres
+
+  postgres:
+    image: postgres:16
+    container_name: mysaasmp-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 12345
+      POSTGRES_DB: mysaas
+    ports:
+      - "5438:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

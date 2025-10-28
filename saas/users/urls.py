@@ -3,12 +3,15 @@ from django.urls import path
 from .views import (
     UserCreateView,
     UserListView,
-    UserRetrieveView,
+    UserByTelegramView,
 )
 
 urlpatterns = [
-    # Вариант с миксинами
     path("api/users/", UserCreateView.as_view(), name="user-create"),
-    path("api/users/me/", UserRetrieveView.as_view(), name="user-me"),
     path("api/users/list/", UserListView.as_view(), name="user-list"),
+    path(
+        "users/<str:telegram_id>/",
+        UserByTelegramView.as_view(),
+        name="user-by-telegram_id",
+    ),
 ]

@@ -1,24 +1,32 @@
 version: "3.9"
 services:
   django:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.saas
     container_name: django_saas
-    command: poetry run python saas/manage.py runserver 0.0.0.0:8000
+    working_dir: /app/saas
+    command: poetry run python manage.py runserver 0.0.0.0:8000
     ports:
       - "8088:8000"
     env_file: .env
     environment:
-      - PYTHONPATH=/app
+      - PYTHONPATH=/app/saas
     volumes:
       - ./saas:/app/saas
     depends_on:
       - postgres
 
   bot:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.bot
     container_name: bot_saas
+    working_dir: /app
     command: poetry run python -m bot.main
     env_file: .env
+    environment:
+      - PYTHONPATH=/app/bot
     volumes:
       - ./bot:/app/bot
     depends_on:

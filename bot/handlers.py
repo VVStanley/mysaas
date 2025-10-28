@@ -14,11 +14,13 @@ async def start(message: Message):
 
     if not user or not user.is_registered:
         await message.answer(
-            "Привет! Для доступа к меню зарегистрируйся.",
+            f"Привет! Для доступа к меню зарегистрируйся. {message.from_user}",
             reply_markup=registration_keyboard(),
         )
     else:
-        await message.answer("Добро пожаловать! Вот твое меню:", reply_markup=main_menu_keyboard())
+        await message.answer(
+            "Добро пожаловать! Вот твое меню:", reply_markup=main_menu_keyboard()
+        )
 
 
 @router.callback_query(lambda c: c.data == "register")
@@ -40,4 +42,5 @@ async def register_user(query: CallbackQuery):
 
 @router.message()
 async def echo(message: Message):
-    await message.answer(f"Ты написал: {message.text}")
+    user_id = message.from_user.id
+    await message.answer(f"Ты написал: {message.text} Твой Telegram ID: {user_id}")

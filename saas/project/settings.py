@@ -3,7 +3,7 @@ from pathlib import Path
 import environ
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-environ.Env.read_env(BASE_DIR.parent / ".env")
+environ.Env.read_env(BASE_DIR / ".env.saas")
 
 env = environ.Env(
     DEBUG=(bool, True),
@@ -14,8 +14,12 @@ env = environ.Env(
 API_TOKEN = env("API_TOKEN")
 SECRET_KEY = env("SECRET_KEY")
 DEBUG = env("DEBUG")
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = [
+    "*",
+]
 AUTH_USER_MODEL = "users.User"
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 
 INSTALLED_APPS = [
@@ -25,6 +29,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "rest_framework",
     "drf_spectacular",
     "users",
     "tariff",
@@ -33,6 +38,7 @@ INSTALLED_APPS = [
 REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_AUTHENTICATION_CLASSES": ("rest_framework.authentication.TokenAuthentication",),
+    "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
     ],

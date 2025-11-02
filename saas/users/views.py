@@ -17,7 +17,7 @@ User = get_user_model()
     tags=["Users"],
     summary="Создание нового пользователя",
     description="Регистрация пользователя по Telegram ID. Email не требуется.",
-    request=UserCreateSerializer,
+    request=UserSerializer,
     responses={
         201: OpenApiResponse(
             response=UserCreateSerializer,
@@ -42,6 +42,17 @@ class UserCreateView(mixins.CreateModelMixin, generics.GenericAPIView):
 
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
+
+    def perform_create(self, serializer):
+        return serializer.save()
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        instance = self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        response_serializer = UserSerializer(instance)
+        return Response(response_serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
 @extend_schema(

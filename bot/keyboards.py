@@ -3,7 +3,8 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 def registration_keyboard():
     buttons = [
-        [InlineKeyboardButton(text="Зарегистрироваться", callback_data="register")]
+        [InlineKeyboardButton(text="Зарегистрироваться", callback_data="register")],
+        [InlineKeyboardButton(text="Описание возможностей", callback_data="about_us")],
     ]
     return InlineKeyboardMarkup(inline_keyboard=buttons)
 

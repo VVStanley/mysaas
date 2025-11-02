@@ -5,45 +5,107 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='TariffLimit',
+            name="TariffLimit",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('code', models.CharField(choices=[('all', 'all'), ('wb', 'Wildberries'), ('ozon', 'Ozon'), ('yandex_market', 'Яндекс Маркет'), ('aliexpress', 'AliExpress')], max_length=50, unique=True, verbose_name='Код маркетплейса')),
-                ('max_ai_generations', models.PositiveIntegerField(default=50, verbose_name='Макс. генераций ИИ в месяц')),
-                ('max_products', models.PositiveIntegerField(default=100, verbose_name='Макс. товаров для отслеживания')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+                    ),
+                ),
+                (
+                    "code",
+                    models.CharField(
+                        choices=[
+                            ("all", "all"),
+                            ("wb", "Wildberries"),
+                            ("ozon", "Ozon"),
+                            ("yandex_market", "Яндекс Маркет"),
+                            ("aliexpress", "AliExpress"),
+                        ],
+                        max_length=50,
+                        unique=True,
+                        verbose_name="Код маркетплейса",
+                    ),
+                ),
+                (
+                    "max_ai_generations",
+                    models.PositiveIntegerField(
+                        default=50, verbose_name="Макс. генераций ИИ в месяц"
+                    ),
+                ),
+                (
+                    "max_products",
+                    models.PositiveIntegerField(
+                        default=100, verbose_name="Макс. товаров для отслеживания"
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Маркетплейс',
-                'verbose_name_plural': 'Маркетплейсы',
-                'db_table': 'tariff_limits',
+                "verbose_name": "Маркетплейс",
+                "verbose_name_plural": "Маркетплейсы",
+                "db_table": "tariff_limits",
             },
         ),
         migrations.CreateModel(
-            name='Tariff',
+            name="Tariff",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('code', models.CharField(choices=[('free', 'Бесплатный'), ('basic', 'Базовый'), ('premium', 'Премиум')], max_length=20, unique=True, verbose_name='Код тарифа')),
-                ('price', models.DecimalField(decimal_places=2, default=0, max_digits=10, verbose_name='Цена в месяц (руб)')),
-                ('description', models.TextField(blank=True, verbose_name='Описание')),
-                ('is_active', models.BooleanField(default=True, verbose_name='Активный')),
-                ('order', models.PositiveIntegerField(default=0, verbose_name='Порядок отображения')),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('limits', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='tariff.tarifflimit', verbose_name='Tariff limits')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+                    ),
+                ),
+                (
+                    "code",
+                    models.CharField(
+                        choices=[
+                            ("free", "Бесплатный"),
+                            ("basic", "Базовый"),
+                            ("premium", "Премиум"),
+                        ],
+                        max_length=20,
+                        unique=True,
+                        verbose_name="Код тарифа",
+                    ),
+                ),
+                (
+                    "price",
+                    models.DecimalField(
+                        decimal_places=2,
+                        default=0,
+                        max_digits=10,
+                        verbose_name="Цена в месяц (руб)",
+                    ),
+                ),
+                ("description", models.TextField(blank=True, verbose_name="Описание")),
+                ("is_active", models.BooleanField(default=True, verbose_name="Активный")),
+                (
+                    "order",
+                    models.PositiveIntegerField(default=0, verbose_name="Порядок отображения"),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "limits",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        to="tariff.tarifflimit",
+                        verbose_name="Tariff limits",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Тариф',
-                'verbose_name_plural': 'Тарифы',
-                'db_table': 'tariffs',
-                'ordering': ['order', 'price'],
+                "verbose_name": "Тариф",
+                "verbose_name_plural": "Тарифы",
+                "db_table": "tariffs",
+                "ordering": ["order", "price"],
             },
         ),
     ]

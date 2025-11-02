@@ -21,12 +21,17 @@ logs:
 # Перезапустить проект
 restart: down up
 
-saas_models:
-	datamodel-codegen \
-	--url http://0.0.0.0:8088/api/schema/ \
-	--capitalise-enum-members \
-	--snake-case-field \
-	--enum-field-as-literal=one \
-	--use-double-quotes \
-	--field-constraints \
-	--output bot/saas/models.py \
+
+cfile:
+	curl http://0.0.0.0:8088/api/schema/ -o schema.json
+
+cmodels:
+	datamodel-codegen --input schema.json --input-file-type openapi \
+	  --output-model-type pydantic_v2.BaseModel \
+	  --capitalise-enum-members \
+	  --snake-case-field \
+	  --enum-field-as-literal=one \
+	  --use-double-quotes \
+	  --target-python-version 3.12 \
+	  --disable-timestamp \
+	  --output bot/saas/models.py
